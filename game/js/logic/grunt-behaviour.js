@@ -14,10 +14,10 @@ function changeColour (state) {
 }
 
 module.exports = {
-  type: 'BouncingBallGame-Behaviour',
+  type: 'Grunt-Behaviour',
   func: function GameLogic () {
     return {
-      changeColour: changeColour
+      
     };
   }
 };

@@ -28,8 +28,8 @@ function theBallRadius (state) {
   return state['bouncing-ball-game'].ball.radius;
 }
 
-function theBoardDimensions (state) {
-  return state['bouncing-ball-game'].board;
+function theWorldDimensions (state) {
+  return state['grunt-game'].world;
 }
 
 module.exports = {
@@ -56,23 +56,23 @@ module.exports = {
       return camera;
     }
 
-    function createCircle () {
+    function createPlayer () {
       var material = new THREE.MeshBasicMaterial();
-
-      var geometry = new THREE.CircleGeometry(currentState().get(theBallRadius), 100);
+      material.color.setHex(0xDA7F34);
+      var geometry = new THREE.CircleGeometry(10, 100);
       var mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(0,0,-100);
+      mesh.position.set(0,0,1);
 
       return mesh;
     }
 
-    function createBoard () {
+    function createGround () {
       var material = new THREE.MeshBasicMaterial();
-      material.color.setHex(0x55ff55);
+      material.color.setHex(0xF5F3DC);
 
-      var geometry = new THREE.PlaneBufferGeometry(currentState().get(theBoardDimensions).width, currentState().get(theBoardDimensions).height);
+      var geometry = new THREE.PlaneBufferGeometry(currentState().get(theWorldDimensions).width, currentState().get(theWorldDimensions).height);
       var mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(0,0,-101);
+      mesh.position.set(0,0,0);
 
       return mesh;
     }
@@ -84,13 +84,13 @@ module.exports = {
       renderer.setSize(dims.usableWidth, dims.usableHeight);
       $()('#' + config().client.element).append(renderer.domElement);
 
-      var ball = createCircle();
-      var board = createBoard();
-      scene.add(board);
-      scene.add(ball);
+      var player = createPlayer();
+      scene.add(createGround());
 
-      tracker().onChangeOf(theBallPosition, updateBall, ball);
-      tracker().onChangeOf(theBallDemeanour, updateColour, ball);
+      scene.add(player);
+
+      // tracker().onChangeOf(theBallPosition, updateBall, ball);
+      // tracker().onChangeOf(theBallDemeanour, updateColour, ball);
 
       define()('OnRenderFrame', function OnReady () {
         return function () {

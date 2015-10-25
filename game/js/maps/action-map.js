@@ -2,10 +2,10 @@
 
 module.exports = {
   type: 'ActionMap',
-  deps: ['BouncingBallGame-Behaviour'],
+  deps: ['Grunt-Behaviour'],
   func: function(behaviour) {
     return {
-      'primary': [{target: behaviour().changeColour, onRelease: true}]
+      // 'primary': [{target: behaviour().changeColour, onRelease: true}]
     };
   }
 };
