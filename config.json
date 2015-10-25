@@ -1,5 +1,8 @@
 {
   "client": {
     "aspectRatio": 2
+  },
+  "debug": {
+    "develop": true
   }
 }

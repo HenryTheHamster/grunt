@@ -7,13 +7,13 @@ module.exports = {
       'grunt-game': {
         player: {
           position: {
-            x: 100,
-            y: 100
+            x: 0,
+            y: 0
           }
         },
         world: {
-          width: 1000,
-          height: 1000
+          width: 10000,
+          height: 10000
         }
       }
     };

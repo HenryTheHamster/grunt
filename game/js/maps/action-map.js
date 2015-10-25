@@ -5,6 +5,10 @@ module.exports = {
   deps: ['Grunt-Behaviour'],
   func: function(behaviour) {
     return {
+      'left': [{target: behaviour().left}],
+      'right': [{target: behaviour().right}],
+      'up': [{target: behaviour().up}],
+      'down': [{target: behaviour().down}]
       // 'primary': [{target: behaviour().changeColour, onRelease: true}]
     };
   }

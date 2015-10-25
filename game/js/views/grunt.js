@@ -24,8 +24,8 @@ function theBallDemeanour (state) {
   return state['bouncing-ball-game'].ball.demeanour;
 }
 
-function theBallRadius (state) {
-  return state['bouncing-ball-game'].ball.radius;
+function thePlayer (state) {
+  return state['grunt-game'].player;
 }
 
 function theWorldDimensions (state) {
@@ -38,6 +38,7 @@ module.exports = {
   func: function OnReady (config, tracker, define, currentState, $) {
     var camera;
     var renderer;
+    var player;
 
     function createCamera (dims) {
       var camera = new THREE.OrthographicCamera(
@@ -56,19 +57,30 @@ module.exports = {
       return camera;
     }
 
+    function updatePlayer (id, current, previous) {
+      player.position.set(current.position.x, current.position.y, 1);
+      camera.position.set(current.position.x, current.position.y, 1);
+    }
+
     function createPlayer () {
+      var player = currentState().get(thePlayer)
       var material = new THREE.MeshBasicMaterial();
       material.color.setHex(0xDA7F34);
       var geometry = new THREE.CircleGeometry(10, 100);
       var mesh = new THREE.Mesh(geometry, material);
       mesh.position.set(0,0,1);
-
+      console.log(player.position.x);
       return mesh;
     }
 
     function createGround () {
       var material = new THREE.MeshBasicMaterial();
       material.color.setHex(0xF5F3DC);
+      var texture = THREE.ImageUtils.loadTexture('/game/textures/tiles.jpg');
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      texture.repeat.set( 5, 5 );
+      material.map = texture;
 
       var geometry = new THREE.PlaneBufferGeometry(currentState().get(theWorldDimensions).width, currentState().get(theWorldDimensions).height);
       var mesh = new THREE.Mesh(geometry, material);
@@ -84,13 +96,13 @@ module.exports = {
       renderer.setSize(dims.usableWidth, dims.usableHeight);
       $()('#' + config().client.element).append(renderer.domElement);
 
-      var player = createPlayer();
+      player = createPlayer();
       scene.add(createGround());
 
       scene.add(player);
 
       // tracker().onChangeOf(theBallPosition, updateBall, ball);
-      // tracker().onChangeOf(theBallDemeanour, updateColour, ball);
+      tracker().onChangeOf(thePlayer, updatePlayer);
 
       define()('OnRenderFrame', function OnReady () {
         return function () {
