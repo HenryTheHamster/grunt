@@ -64,12 +64,12 @@ module.exports = {
         }
       },
       fire: function(state, data) {
-        console.log('fire');
         var rot = state.for('grunt-game').get('player')('rotation');
         var pos = state.for('grunt-game').get('player')('position');
         var bullets = state.for('grunt-game').get('player')('bullets');
         bullets.push({
           id: sequence.next('bullets'),
+          speed: bulletSpeed,
           velocity: {
             x: Math.cos(rot / 360 * 2 * Math.PI) * bulletSpeed,
             y: Math.sin(rot / 360 * 2 * Math.PI) * bulletSpeed
@@ -77,7 +77,8 @@ module.exports = {
           position: {
             x: pos('x'),
             y: pos('y')
-          }
+          },
+          distance: 0
         })
         return {
           'grunt-game': {

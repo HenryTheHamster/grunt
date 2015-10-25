@@ -69,11 +69,8 @@ module.exports = {
     }
 
     function removeBullet (id, element) {
-      console.log('deleting', id, bullets)
-      scene.remove(element)
-      // bullets.splice(id, 1);
+      scene.remove(bullets[id]);
       delete bullets[id];
-      console.log('deleted', bullets)
     }
 
     function updateBullet (id, current, previous) {
@@ -82,7 +79,6 @@ module.exports = {
     }
 
     function createBullet (id, element) {
-      console.log('creating', id);
       var playerState = currentState().get(thePlayer)
       var material = new THREE.MeshBasicMaterial();
       material.color.setHex(0x000000);
@@ -99,7 +95,6 @@ module.exports = {
       var geometry = new THREE.CircleGeometry(10, 32);
       var mesh = new THREE.Mesh(geometry, material);
       mesh.position.set(playerState.position.x,playerState.position.y,1);
-      console.log(playerState.position.x);
       return mesh;
     }
 
