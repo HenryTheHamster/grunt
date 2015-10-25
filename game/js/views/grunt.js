@@ -63,13 +63,13 @@ module.exports = {
     }
 
     function createPlayer () {
-      var player = currentState().get(thePlayer)
+      var playerState = currentState().get(thePlayer)
       var material = new THREE.MeshBasicMaterial();
       material.color.setHex(0xDA7F34);
       var geometry = new THREE.CircleGeometry(10, 100);
       var mesh = new THREE.Mesh(geometry, material);
       mesh.position.set(0,0,1);
-      console.log(player.position.x);
+      console.log(playerState.position.x);
       return mesh;
     }
 
