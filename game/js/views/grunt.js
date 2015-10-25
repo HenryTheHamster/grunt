@@ -57,7 +57,7 @@ module.exports = {
       return camera;
     }
 
-    function updatePlayer (id, current, previous) {
+    function updatePlayer (current, previous) {
       player.position.set(current.position.x, current.position.y, 1);
       camera.position.set(current.position.x, current.position.y, 1);
     }
