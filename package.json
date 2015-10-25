@@ -8,7 +8,8 @@
   },
   "dependencies": {
     "ensemblejs": "file:../ensemblejs",
-    "ensemblejs-threejs": "^0.71.0"
+    "ensemblejs-threejs": "^0.71.0",
+    "distributedlife-sequence": "^1.0.1"
   },
   "devDependencies": {
     "browserify": "^8.1.1",

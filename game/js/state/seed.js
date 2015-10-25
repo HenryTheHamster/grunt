@@ -10,7 +10,8 @@ module.exports = {
             x: 0,
             y: 0
           },
-          rotation: 0
+          rotation: 0,
+          bullets: []
         },
         world: {
           width: 10000,

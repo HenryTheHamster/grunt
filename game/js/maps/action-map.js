@@ -8,8 +8,8 @@ module.exports = {
       'left': [{target: behaviour().left}],
       'right': [{target: behaviour().right}],
       'up': [{target: behaviour().up}],
-      'down': [{target: behaviour().down}]
-      // 'primary': [{target: behaviour().changeColour, onRelease: true}]
+      'down': [{target: behaviour().down}],
+      'x': [{target: behaviour().fire, onRelease: true}]
     };
   }
 };

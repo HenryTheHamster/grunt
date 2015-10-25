@@ -28,6 +28,10 @@ function thePlayer (state) {
   return state['grunt-game'].player;
 }
 
+function thePlayerBullets (state) {
+  return state['grunt-game'].player.bullets;
+}
+
 function theWorldDimensions (state) {
   return state['grunt-game'].world;
 }
@@ -37,8 +41,10 @@ module.exports = {
   deps: ['Config', 'StateTracker', 'DefinePlugin', 'CurrentState', '$'],
   func: function OnReady (config, tracker, define, currentState, $) {
     var camera;
+    var scene;
     var renderer;
     var player;
+    var bullets = {};
 
     function createCamera (dims) {
       var camera = new THREE.OrthographicCamera(
@@ -62,13 +68,37 @@ module.exports = {
       camera.position.set(current.position.x, current.position.y, 1);
     }
 
+    function removeBullet (id, element) {
+      console.log('deleting', id, bullets)
+      scene.remove(element)
+      // bullets.splice(id, 1);
+      delete bullets[id];
+      console.log('deleted', bullets)
+    }
+
+    function updateBullet (id, current, previous) {
+      bullets[id].position.x = current.position.x;
+      bullets[id].position.y = current.position.y;
+    }
+
+    function createBullet (id, element) {
+      console.log('creating', id);
+      var playerState = currentState().get(thePlayer)
+      var material = new THREE.MeshBasicMaterial();
+      material.color.setHex(0x000000);
+      var geometry = new THREE.CircleGeometry(1, 3);
+      bullets[id] = new THREE.Mesh(geometry, material);
+      bullets[id].position.set(playerState.position.x,playerState.position.y,1);
+      scene.add(bullets[id]);
+    }
+
     function createPlayer () {
       var playerState = currentState().get(thePlayer)
       var material = new THREE.MeshBasicMaterial();
       material.color.setHex(0xDA7F34);
-      var geometry = new THREE.CircleGeometry(10, 100);
+      var geometry = new THREE.CircleGeometry(10, 32);
       var mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(0,0,1);
+      mesh.position.set(playerState.position.x,playerState.position.y,1);
       console.log(playerState.position.x);
       return mesh;
     }
@@ -91,7 +121,7 @@ module.exports = {
 
     return function setup (dims) {
       camera = createCamera(dims);
-      var scene = new THREE.Scene();
+      scene = new THREE.Scene();
       renderer = new THREE.WebGLRenderer({ antialias: true });
       renderer.setSize(dims.usableWidth, dims.usableHeight);
       $()('#' + config().client.element).append(renderer.domElement);
@@ -101,8 +131,10 @@ module.exports = {
 
       scene.add(player);
 
-      // tracker().onChangeOf(theBallPosition, updateBall, ball);
       tracker().onChangeOf(thePlayer, updatePlayer);
+      tracker().onElementAdded(thePlayerBullets, createBullet);
+      tracker().onElementChanged(thePlayerBullets, updateBullet);
+      tracker().onElementRemoved(thePlayerBullets, removeBullet);
 
       define()('OnRenderFrame', function OnReady () {
         return function () {
